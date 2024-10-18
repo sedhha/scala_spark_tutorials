@@ -1,0 +1,3 @@
+Start from here
+This is a README file containing all the details about how to get started with Apache Spark. This will help me land my first dream job and get really good at Spark.
+This tutorial strictly follows Spark 3.0.0 and Scala 2.12.10. If you are using a different version, please refer to the official documentation.
