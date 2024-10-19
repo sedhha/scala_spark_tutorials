@@ -1,7 +1,7 @@
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{col,explode,split, lower}
 
-object Chapter2 extends App {
+object Chapter2 {
   private val spark = SparkSession.builder()
     .appName("Chapter2")
     .master("local[*]")
