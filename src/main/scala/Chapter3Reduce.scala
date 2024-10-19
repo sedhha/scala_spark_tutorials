@@ -1,6 +1,6 @@
 import org.apache.spark.sql.SparkSession
 
-object Chapter3Reduce extends App {
+object Chapter3Reduce {
   private val spark = SparkSession.builder()
     .appName("Chapter3")
     .master("local[*]")
@@ -24,5 +24,10 @@ object Chapter3Reduce extends App {
     // logger=ERROR, 
     // .log -> 1M log texts | | | |
     // log=ERROR,INFO,WARN thread=Main,SUbsequent
+
+    /*
+        sum 1M numbers -> 15
+        caching -> 1M -> 15
+    */
 
 }

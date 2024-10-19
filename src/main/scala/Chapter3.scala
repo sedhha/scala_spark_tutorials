@@ -1,7 +1,7 @@
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.rdd.RDD
 
-object Chapter3 {
+object Chapter3 extends App {
   private val spark = SparkSession.builder()
     .appName("Chapter3")
     .master("local[*]")
@@ -27,7 +27,7 @@ object Chapter3 {
   }
 
   // Create the base RDD once
-  val nums = spark.sparkContext.parallelize(1 to 1_000_000_00)
+  val nums = spark.sparkContext.parallelize(1 to 1_000_000_000)
 
   // RDDs for with and without caching
   val largeNumbersWithCache = nums.filter(_ > 500000).cache()
