@@ -1,4 +1,5 @@
 import org.apache.spark.sql.SparkSession
+
 object Chapter2 extends App {
   private val spark = SparkSession.builder()
     .appName("Chapter2")
