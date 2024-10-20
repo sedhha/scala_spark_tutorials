@@ -344,3 +344,138 @@ println(s"Average: $average")
 - **Be mindful** of memory resources when caching large datasets.
 
 - **Measure performance** to demonstrate the benefits of caching.
+
+### Why Negative Sums in output - Data types matter
+
+```bash
+[info] running (fork) Chapter3
+[info] ========================= With Caching ================================
+[info] Sum: -689507728
+[info] Count: 999500000
+[info] Average: -0.6898526543271636
+[info] [With Caching] Time taken: 4902 ms
+[info] Expensive Operation complete
+[info] ================================
+[info] Sum: -689507728
+[info] Count: 999500000
+[info] Average: -0.6898526543271636
+[info] [With Caching] Time taken: 2520 ms
+[info] Expensive Operation complete
+[info] ================================
+[info] Sum: -689507728
+[info] Count: 999500000
+[info] Average: -0.6898526543271636
+[info] [With Caching] Time taken: 2688 ms
+[info] Expensive Operation complete
+[info] ================================
+[info] Sum: -689507728
+[info] Count: 999500000
+[info] Average: -0.6898526543271636
+[info] [With Caching] Time taken: 2484 ms
+[info] Expensive Operation complete
+[info] ================================
+[info] Sum: -689507728
+[info] Count: 999500000
+[info] Average: -0.6898526543271636
+[info] [With Caching] Time taken: 2644 ms
+[info] Expensive Operation complete
+[info] ================================
+[info] ====================== Without Caching ================================
+[info] Sum: -689507728
+[info] Count: 999500000
+[info] Average: -0.6898526543271636
+[info] [Without Caching] Time taken: 25521 ms
+[info] Expensive Operation complete
+[info] ================================
+[info] Sum: -689507728
+[info] Count: 999500000
+[info] Average: -0.6898526543271636
+[info] [Without Caching] Time taken: 27905 ms
+[info] Expensive Operation complete
+[info] ================================
+[info] Sum: -689507728
+[info] Count: 999500000
+[info] Average: -0.6898526543271636
+[info] [Without Caching] Time taken: 20405 ms
+[info] Expensive Operation complete
+[info] ================================
+[info] Sum: -689507728
+[info] Count: 999500000
+[info] Average: -0.6898526543271636
+[info] [Without Caching] Time taken: 16777 ms
+[info] Expensive Operation complete
+[info] ================================
+[info] Sum: -689507728
+[info] Count: 999500000
+[info] Average: -0.6898526543271636
+[info] [Without Caching] Time taken: 22151 ms
+[info] Expensive Operation complete
+[info] ================================
+```
+
+This might be a question for a lot of you that even though in caching demonstration we had all positives why are we seeing sum as negative?
+
+Here's why!
+
+- The reason we're seeing a negative sum is due to **integer overflow** caused by exceeding the maximum value that an `Int` can hold in Scala.
+- By default, the numbers in our RDD are of type `Int`, which is a 32-bit signed integer.
+- The maximum value for an `Int` is **2,147,483,647**. When the sum of our numbers exceeds this limit, it wraps around and becomes negative due to overflow.
+
+### Understanding the Issue
+
+#### Integer Limits:
+
+- **Int (32-bit signed integer)**:
+  - Range: from **-2,147,483,648** to **2,147,483,647**.
+- **Long (64-bit signed integer)**:
+  - Range: from **-9,223,372,036,854,775,808** to **9,223,372,036,854,775,807**.
+
+#### Sum Calculation:
+
+We're summing a sequence of numbers from **500,001** to **1,000,000,000**, which is **999,500,000** numbers in total. The sum of these numbers is extremely large and exceeds the `Int` maximum value.
+
+**Calculating the Expected Sum:**
+
+The sum of an arithmetic series from **a** to **b** is calculated as:
+
+\[
+\text{Sum} = \frac{(n)(a + b)}{2}
+\]
+
+Where:
+
+- \( n = b - a + 1 \) (number of terms)
+
+Applying this to our case:
+
+- \( a = 500,001 \)
+- \( b = 1,000,000,000 \)
+- \( n = 1,000,000,000 - 500,001 + 1 = 999,500,000 \)
+
+Calculating the sum:
+
+\[
+\text{Sum} = \frac{(999,500,000)(500,001 + 1,000,000,000)}{2} = \frac{(999,500,000)(1,500,000,001)}{2}
+\]
+
+This results in a sum of approximately **749,625,000,749,500,000**, which is way beyond the capacity of an `Int`.
+
+### Solution: Use `Long` Instead of `Int`
+
+To fix this issue, we need to ensure that your RDD and all computations use `Long` instead of `Int`.
+
+### Data types matter!
+
+The negative sum we're observing is due to integer overflow when summing large numbers using 32-bit integers (`Int`). By switching to 64-bit integers (`Long`), you can correctly compute the sum without overflow.
+
+---
+
+**Key Takeaways**:
+
+- **Data Types Matter**: Choosing the correct data type is crucial when working with large numbers to avoid overflow errors.
+
+- **Understanding Overflow**: Integer overflow can lead to incorrect results, such as negative sums when you expect positive values.
+
+- **Importance of Caching**: Properly caching RDDs can significantly improve performance for repeated computations.
+
+- **Resource Management**: Be mindful of the computational and memory resources required for large-scale data processing.
