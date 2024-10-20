@@ -1,4 +1,4 @@
-# Chapter - 5: Broadcast Variables and Accumulators in Spark
+# Chapter - 4: Broadcast Variables and Accumulators in Spark
 
 In Apache Spark, shared variables are essential for improving the efficiency of parallel operations across multiple nodes in a distributed environment. By default, each task gets its own copy of variables used in a function, which can result in inefficiency, especially when working with large datasets. To address this, Spark introduces two types of shared variables: **broadcast variables** and **accumulators**.
 
