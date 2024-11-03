@@ -11,3 +11,4 @@ target/*
 target/*
 project/*
 venv/*
+**/ignore/*

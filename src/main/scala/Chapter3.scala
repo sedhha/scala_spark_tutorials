@@ -1,7 +1,7 @@
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.rdd.RDD
 
-object Chapter3 extends App {
+object Chapter3 {
   private val spark = SparkSession.builder()
     .appName("Chapter3")
     .master("local[*]")
